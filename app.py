@@ -152,7 +152,7 @@ class UsersModel(db.Model):
                 } for user in users]
 
             return {"count": len(results), "users": results}
-popular_df = pickle.load(open('popular.pkl','rb'))
+popular_df = pickle.load(open('popular_.pkl','rb'))
 rating=popular_df['avg_ratings'].values
 
 @app.route('/popularity')
@@ -168,7 +168,7 @@ def popularity():
                            
                            
                            )
-popular_df = pickle.load(open('popular.pkl','rb'))
+popular_df = pickle.load(open('popular_.pkl','rb'))
 pt = pickle.load(open('pt.pkl','rb'))
 items = pickle.load(open('item.pkl','rb'))
 similarity_scores = pickle.load(open('similarity_scores.pkl','rb'))
@@ -176,9 +176,10 @@ similarity_scores = pickle.load(open('similarity_scores.pkl','rb'))
 def recommend_ui():
     return render_template('recommend.html')
 
-@app.route('/recommend',methods=['post'])
+@app.route('/user4',methods=['post'])
 def recommend():
     user_input = request.form.get('user_input')
+    
     index = np.where(pt.index == user_input)[0][0]
     similar_items = sorted(list(enumerate(similarity_scores[index])), key=lambda x: x[1], reverse=True)[1:5]
 
